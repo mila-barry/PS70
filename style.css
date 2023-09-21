@@ -20,15 +20,15 @@ h1 {font-size: 9px;}
 .nav-title{
   margin-left: 15px;
   margin-right: 15px;
-  color: red;
+  color: yellowgreen;
 }
 
 a:link {
-  color: red;
+  color: yellowgreen;
 }
 
 a:visited {
-  color: red;
+  color: yellowgreen;
 }
 
 img[alt=ghostboy] { width: 320px; }
@@ -50,6 +50,36 @@ img[alt=letterpress1] { width: 330px; }
 img[alt=FRANK] { width: 330px; }
 
 img[alt=thehiveclose] { width: 320px; }
+
+img[alt=hive1] { width: 350px; }
+
+img[alt=hive2] { width: 350px; }
+
+img[alt=hive3] { width: 350px; }
+
+img[alt=hive4] { width: 350px; }
+
+img[alt=hive5] { width: 350px; }
+
+img[alt=hive6] { width: 350px; }
+
+img[alt=vector] { width: 300px; }
+
+img[alt=bee1] { width: 360px; }
+
+img[alt=bee3] { width: 350px; }
+
+img[alt=beeconnector1] { width: 350px; }
+
+img[alt=beeconnector2] { width: 350px; }
+
+img[alt=honeyhive1] { width: 350px; }
+
+img[alt=honeyhive2] { width: 350px; }
+
+img[alt=honeyhive3] { width: 350px; }
+
+img[alt=honeyhive4] { width: 350px; }
 
 span {
   font-weight: bolder;
