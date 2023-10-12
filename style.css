@@ -109,5 +109,17 @@ img[alt=ks] { width: 500px; }
 
 img[alt=cover] { width: 320px; }
 
+img[alt=mainpress1] { width: 500px; }
+
+img[alt=mainpress2] { width: 500px; }
+
+img[alt=secure1] { width: 500px; }
+
+img[alt=secure12] { width: 500px; }
+
+img[alt=secure2] { width: 500px; }
+
+img[alt=interimcover] { width: 350px; }
+
 span {
   font-weight: bolder;
