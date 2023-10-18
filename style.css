@@ -119,7 +119,11 @@ img[alt=secure12] { width: 500px; }
 
 img[alt=secure2] { width: 500px; }
 
-img[alt=interimcover] { width: 350px; }
+img[alt=coverpressbed] { width: 350px; }
+
+img[alt=nostamp] { width: 350px; }
+
+img[alt=stamp] { width: 350px; }
 
 span {
   font-weight: bolder;
