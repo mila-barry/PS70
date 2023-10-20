@@ -24,16 +24,117 @@
 <xmp style="display:none;">
 <br> 
 
-#### Week 6: Electronic Input Devices 
+#### Week 6: Gyrating Comet                          
 
-Here is an image: 
+<span>(aka the shadow atom)</span>
 
-(UNDER CONSTRUCTION)
+[electronic input device]
+<video width="640" height="380" controls>
+<source src="lightoncomet.mp4" type="video/mp4">
 
-![Week 6](./sew.png)
+</video><video width="640" height="380" controls>
+<source src="lightoffcomet.mp4" type="video/mp4">
+</video>
 
-And here is a	[link](../index.html).
+*excuse the sneaker in the frame, its propping up the light!<br>
 
+<span>The idea:</span>
+For a few weeks, I’d been thinking about making a paper top and attaching it to a motor so that it can spin forever. But when we learned about phototransistors this week I thought, "Wouldn’t it be cool if the top was light activated?"" Then I made the top and I was like, "huh this top really looks like a star." And then I was "Whoa! wait! a bright star hurtling through space is sort of like a comet!"" And then I was like "double whoa! if I set the threshold value for motor activation high enough, the comet will only spin when a very bright light shines close to it. And then I can turn off the lights and it will cast really cool galactic(ish) shadows on the wall!" Spooky! When I tried this I noticed that the wire also cost cool shadows (and kind of made it look like an abstracted version of a Bohr atomic model)! Hence, the idea for  gyrating comet (alternative name, the shadow atom) was born. The darkness element makes it a very appropriate project to make right before Halloween! It consists of a phototransistor and simple DC motor wired to the same breadboard and Arduino Uno, with some code to help them talk to each other.     
+
+<span>The process:</span>
+The process for this week was fairly straightforward, but also time consuming because I have been struggling to keep up with the microcontroller programming stuff. To begin, I used Wowki to wire and code a few LED circuit simulations to get a little more comfortable with the language and the circuit building process. It helped a lot!
+
+![sblink](./simpleblinkLED.png)
+![siblink](./2simpleblinkLED.png)
+![nodelay](./nodelay.png)
+
+Next I made the top, using this origami tutorial that I found on Youtube. I eventually connected it to the motor using the same cardboard connectors that I designed for my kinetic sculpture in week 2. And I taped the whole contraption to a clipboard clip to prop it up. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NTdgmBz1yoc?si=InG2NrgzjJuhcylU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+![top](./top.jpg)
+![tape](./wavetape.jpg)
+
+Finally, I built the circuit and wrote the code. I’ll go into detail about that below.  
+
+<span>The circuit:</span>
+Here is a photo of my finished circuit! Thanks to Bobby for helping me work out some wiring issues (I initially had only the motor connected to power and ground columns and thus the phototransistor wasn’t reading correctly) but overall this part went pretty smoothly.  
+
+![long](./circuitside.jpg)
+![short](./circuitlong.jpg)
+
+<span>The code:</span> 
+I’m not good at coding (very new to it) so this took a bit of effort to get right. First I went to office hours and wrote some pseudocode and a plan of action with Bobby. Here’s a photo of it! 
+
+![help](./bobbyhelp.jpg)
+
+Next I went to my dorm and wrote the code for just the photoresistor. It originally looked like this and I couldn’t figure out why the phototransistor value was only printing once:
+
+<pre><code class="language-arduino">
+void setup() {
+  // put your setup code here, to run once:
+int photoval = analogRead(A3); 
+Serial.begin(9600);
+Serial.println(photoval); 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+Serial.println(photoval); 
+}
+</code></pre> 
+
+But then I took it back to office hours and Bobby pointed out that I didn’t have analogRead in the loop function. It was an easy fix. The finished photoresistor code looked like this:
+
+<pre><code class="language-arduino">
+void setup() {
+  // put your setup code here, to run once:
+int photoval = analogRead(A3); 
+Serial.begin(9600);
+Serial.println(photoval); 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+int photoval = analogRead(A3); 
+Serial.println(photoval); 
+}
+</code></pre> 
+
+Next, I combined the fixed phototransistor code with the code on the PS70 website for running a DC motor. I did this by using a conditional statement which allowed me to set a specific threshold that the phototransistor must read in order for the motor to turn on.     
+
+<pre><code class="language-arduino">
+int photoval;
+const int A1A = 3; 
+const int A1B = 4; 
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(A1A, OUTPUT);     
+pinMode(A1B, OUTPUT);
+digitalWrite(A1A, LOW);   
+digitalWrite(A1B, LOW);
+Serial.begin(9600);
+}
+
+void loop() {
+photoval = analogRead(A3); 
+Serial.println(photoval); 
+  // put your main code here, to run repeatedly:
+if (photoval >= 500) {
+// start the motor 
+digitalWrite(A1A, HIGH);   
+digitalWrite(A1B, LOW);
+}
+
+else {
+// stop the motor
+digitalWrite(A1A, LOW);  
+digitalWrite(A1B, LOW); }
+}
+</code></pre> 
+
+That’s it! I’m really proud of the progress I made this week!
 </xmp>
 </body>
 

@@ -125,5 +125,23 @@ img[alt=nostamp] { width: 350px; }
 
 img[alt=stamp] { width: 350px; }
 
+img[alt=tape] { width: 400px; }
+
+img[alt=sblink] { width: 350px; }
+
+img[alt=siblink] { width: 350px; }
+
+img[alt=nodelay] { width: 350px; }
+
+img[alt=long] { width: 500px; }
+
+img[alt=short] { width: 500px; }
+
+img[alt=help] { width: 500px; }
+
+img[alt=top] { width: 400px; }
+
+img[alt=cometfinal] { width: 320px; }
+
 span {
   font-weight: bolder;
