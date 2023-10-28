@@ -24,15 +24,104 @@
 <xmp style="display:none;">
 <br> 
 
-#### Week 7: Electronic Output Devices 
+#### Week 7: The Real MVP! 
 
-Here is an image: 
+<span>(aka breyer & attached stepper motor)</span>
 
-[UNDER CONSTRUCTION]
+[minimum viable product]
+<video width="640" height="380" controls>
+<source src="yay.mp4" type="video/mp4">
+</video>
 
-(UNDER CONSTRUCTION)
+<span>The (updated) idea:</span>   
+The most basic skeleton of the mini printing press is here! My complete design is a two breyer system — one for inking stamp blocks and the other for applying pressure to paper to make the ink transfer. I’ll drive the breyers with stepper motors mounted on aluminum extrusion. I’m also planning to design a press bed to hold the stamps and paper in place throughout the process. Hopefully the press bed will be manually adjustable along the z axis so that different thickness papers can be used without messing with the amount of compression the breyers are able to apply. This week I focused on attaching one breyer to a stepper motor and coding a button to change the direction of rolling. 
+  
+<span>The connector:</span> 
+This part took so much longer than it should have. Last week I bought a breyer at the blick store and Bobby helped me remove the handle so that I could use just the rubber cylinder. All I had to do was create a small mechanism that would secure the stepper motor to one the places where the handle was originally connected. Easier said than done! I initially tried to 3D print a piece that looked a lot like a washer if you extruded it to  4mm. I cut a hole into each circular face such that the stepper motor could press fit to one side and the breyer could pressfit to the other. But to no avail! Despite my diligent use of the calipers, the piece continued to be either too big or too small to effectively secure the two large parts. The plastic was slippery but not malleable at all, so it wasn’t very forgiving. The diameters of the breyer and motor parts were 4.4mm and 4.8mm respectively. I ended up creating a pressfit piece with a 4.7mm hole (accounting for kerf) which worked for both. 
 
-And here is a	[link](../index.html).
+![screen1](./screenshot1.png)
+![screen2](./screenshot2.png)
+![screen3](./screenshot3.png)
+![many](./manytries.jpeg)
+
+In the end, I switched over to wood. I lasercut three thin “washer” connectors, hot glued them together, and then secured the whole thing with heat shrink. This ended up working quite well, although in the future I think it could be refined. The fit on the stepper motor side is slightly better than the fit on the breyer side.      
+
+<span>The circuit:</span>
+With the help of Bobby and the PS70 website, I wired the stepper motor up to my breadboard and Arduino Uno! Once this was working, I added a button which, when pressed, changes the direction of the motor. This way, in the final design, the breyer can return to its original position once its task is complete.
+
+![bb1](./bb1.jpeg)
+![bb2](./bb2.jpeg)
+
+<span>The code:</span> 
+The code is an altered version of the basic stepper motor code on the PS70 website. It's a pretty straightforward nested conditional statement. The essential pseudo-code for the loop looks like this:
+
+<span>SETUP</span>
+
+Set stepPin to OUTPUT (this pin receives information)
+
+Set dirPin to OUTPUT (this pin receives information)
+
+Set buttonPin to INPUT_PULLUP (this pin sends information; PULLUP just tells the arduino that buttonPin should be HIGH unless the button is pressed)
+
+Write dirPin to LOW (0V)
+
+<span>LOOP</span>
+
+Set a = Read buttonPin 
+
+If a == LOW (0V), then Write dirPin
+
+If direction == HIGH (5V), then direction = LOW (0V) (this differential runs the motor)
+
+Else direction = HIGH (5V) (the swap of differentials runs the motor the other direction) 
+
+
+<span>The notes I made with Bobby look like this:</span>
+
+![code](./code.jpeg)
+
+
+<span>The actual code looks like this:</span>
+
+<pre><code class="language-arduino">
+const int stepPin = 5;
+const int dirPin = 4;
+const int buttonPin = 10;
+int direction = HIGH; 
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+
+  pinMode(buttonPin, INPUT_PULLUP);
+
+
+  digitalWrite(dirPin, LOW);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int a = digitalRead(buttonPin);
+  if (a == LOW){
+    digitalWrite(dirPin, direction);
+    if (direction == HIGH){
+      direction = LOW;
+    }
+    else 
+    {
+      direction = HIGH; 
+    }
+  }
+
+  digitalWrite(stepPin, HIGH);
+  delay(1);
+  digitalWrite(stepPin, LOW);
+  delay(1);
+}
+</code></pre> 
+
+That’s it! For further improvements (besides just building the rest of the machine) I need to account for the fact that the stepper motor is only connected to the breyer on one side. Though the whole breyer does move, having the weight of the motor on only one side will create a problematic imbalance. 
 
 </xmp>
 </body>

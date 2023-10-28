@@ -143,5 +143,21 @@ img[alt=top] { width: 400px; }
 
 img[alt=cometfinal] { width: 320px; }
 
+img[alt=screen1] { width: 320px; }
+
+img[alt=screen2] { width: 320px; }
+
+img[alt=screen3] { width: 320px; }
+
+img[alt=many] { width: 320px; }
+
+img[alt=bb1] { width: 400px; }
+
+img[alt=bb2] { width: 400px; }
+
+img[alt=code] { width: 500px; }
+
+img[alt=fullmvp] { width: 350px; }
+
 span {
   font-weight: bolder;
