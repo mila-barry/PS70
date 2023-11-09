@@ -169,9 +169,19 @@ img[alt=heat] { width: 430px; }
 
 img[alt=mold] { width: 320px; }
 
-img[alt=sil] { width: 500px; }
+img[alt=sil] { width: 450px; }
 
 img[alt=mol] { width: 270px; }
+
+img[alt=mila] { width: 430px; }
+
+img[alt=pr] { width: 500px; }
+
+img[alt=dirty] { width: 380px; }
+
+img[alt=mid] { width: 450px; }
+
+img[alt=moldd] { width: 250px; }
 
 span {
   font-weight: bolder;
