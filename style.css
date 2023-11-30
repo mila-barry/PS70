@@ -183,5 +183,9 @@ img[alt=mid] { width: 450px; }
 
 img[alt=moldd] { width: 250px; }
 
+img[alt=por] { width: 400px; }
+
+img[alt=land] { width: 350px; }
+
 span {
   font-weight: bolder;
