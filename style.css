@@ -187,5 +187,17 @@ img[alt=por] { width: 400px; }
 
 img[alt=land] { width: 350px; }
 
+img[alt=bboard] { width: 350px; }
+
+img[alt=close] { width: 350px; }
+
+img[alt=full] { width: 350px; }
+
+img[alt=full2] { width: 700px; }
+
+img[alt=full2front] { width: 350px; }
+
+img[alt=stepper] { width: 350px; }
+
 span {
   font-weight: bolder;
