@@ -239,5 +239,22 @@ img[alt=light] { width: 400px; }
 
 img[alt=full2] { width: 350px; }
 
+
+img[alt=sc] { width: 350px; }
+
+img[alt=pc] { width: 350px; }
+
+img[alt=bc] { width: 350px; }
+
+img[alt=sp] { width: 350px; }
+
+img[alt=wiring] { width: 350px; }
+
+img[alt=limit] { width: 350px; }
+
+img[alt=a] { width: 350px; }
+
+img[alt=pink] { width: 350px; }
+
 span {
   font-weight: bolder;

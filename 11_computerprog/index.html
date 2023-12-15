@@ -26,7 +26,7 @@
 
 #### PRINTING PRESS! 
 
-[final project, UPDATE ALMOST COMPLETE]
+[final project]
 
 ![full](./full.jpeg)
 
@@ -34,7 +34,7 @@
 <source src="./printingpress.mp4" type="video/mp4">
 </video>
 
-I’m so proud of how this printing press came out! It took several late nights and long days to pull it together. Shoutout to Bobby and Kassia for being the absolute greatest and most patient TFs ever—I could never have done it without them! I want to keep tweaking it after this semester until it actually becomes more efficient than printing text by hand. I actually think I’m pretty close to that now, much closer than I expected to be! Here’s how the build went >>
+I’m so proud of how this printing press came out! It took several late nights and long days to pull it together. Shoutout to Bobby and Kassia for being the absolute greatest and most patient TFs ever—I could never have done it without them! I want to keep tweaking the project after this semester until it actually becomes more efficient than printing text by hand. I actually think I’m pretty close to that now, much closer than I expected to be! Here’s how the build went >>
 
 <span>Mechanics</span> 
 
@@ -45,24 +45,29 @@ rail to pulley and stepper connectors:
 
 ![stepper](./stepper.png)
 ![pulley](./pulley.png)
+![sc](./stepperc.jpeg)
+![pc](./pulleyc.jpeg)
 
 breyer to cart connectors:
 
 ![disk](./pressdisk.png)
 ![failed](./failedcart.png)
 ![yes](./yescart.png)
+![bc](./breyerc.jpeg)
 
 <span>Press Bed</span>  
-Next I worked on the pressbed, which should have been simple but took so much iterating. In the end, it became a wood pulp baseboard (raised on four legs) with a spring adjusted pressbed in the center. The rails are secured to the baseboard with 3D printed screw plates, and the spring adjusted press bed is secured to the baseboard with a spring slid over a screw and locked with a nut. It's easier to visualize, so see the image below. The spring-and-nut combo allows for the height of the plate to be adjusted depending on the paper and typeface in use. It also provides a nice bouncing feature that makes it easier to slip the paper under the breyer before you initiate the print!
+Next I worked on the press bed, which should have been simple but took so much iterating. In the end, it became a wood pulp baseboard (raised on four legs) with a spring adjusted press bed in the center. The rails are secured to the baseboard with 3D printed screw plates, and the spring adjusted press bed is secured to the baseboard with a spring slid over a screw and locked with a nut. It's easier to visualize, so see the image below. The spring-and-nut combo allows for the height of the plate to be adjusted depending on the paper and typeface in use. It also provides a nice bouncing feature that makes it easier to slip the paper under the breyer before you initiate the print!
 
-Another important note—the pressbed has an acrylic and a steel layer. It's magnetized so that letters can be stuck on in any orientation! A free form printing press! 
+Another important note—the press bed has an acrylic and a steel layer. It's magnetized so that letters can be stuck on in any orientation! A free form printing press! 
 
-baseboard, pressbed, legs & rail to baseboard connectors:
+baseboard, press bed, legs & rail to baseboard connectors:
 
 ![base](./baseboard.png)
 ![press](./pressbed.png)
 ![leg](./leg.png)
 ![rail](./railconnect.png)
+![sp](./springgy.jpeg)
+![pink](./pink.jpg)
 
 <span>Typeface</span>  
 This was the most tedious part of the whole endeavor, by far. At first I laser cut letters and attempted to make plastic molds using the vacuum sealer. The idea was then to cast positives in silicone. The stamps for my press needed to be rubber, so just 3D printing or laser cutting was not an option. Unfortunately, the laser cut letters got stuck in the plastic, so I was unable to make silicone casts. The next day I bought carving linoleum to make the letters by hand, but then Kassia stepped in and recommended using the resin printer. It was a saving grace! I resin printed the letters, mounted them on laser cut wood, and then mounted the stamps on small magnets. The letters had to be facing backwards in order to make forward prints. 
@@ -76,11 +81,12 @@ This was the most tedious part of the whole endeavor, by far. At first I laser c
 
 The wiring step up is pretty similar to the step up of my MVP. It's just two A4988 carriers connected to a breadboard and controlled by a button. The MVP button changed the direction of the stepper, but this button simply started the stepper. It's programmed to go a certain distance and turn around, so no button to change direction is needed anymore. I also added a limit switch so that the carts can be homed when they return to the end of the rail. Shout out to Bobby for helping me wire up the second stepper motor in the 11th hour! I was hoping one would be enough, but there wasn’t sufficient torque to move both carts. Wiring went wrong a lot and probably took the most amount of trial and error to get right, though most of the mistakes ended up being pretty simple.       
 
-[images coming]
+![wiring](./wiring.jpeg)
+![limit](./limit.jpeg)
 
 <span>Code</span> 
 
-Shoutout AGAIN to Bobby here! Coding is the area where I am the least confident but he answered every single tiny question that I had. And I had a LOT. After I downloaded the AccelStepper library, he helped me write some simple code to make the motor move, troubleshooted with me to figure out how many steps would take the breyer to the end of the pressbed, and supported when I needed to duplicate certain sections to accommodate the second motor. Next, I played with that code to figure out the exact speed and distances that I needed. Then I wrote some code to test my limit switch and on button. Once I knew the buttons were wired correctly, I added a few lines to my main code to have them control the motor. Kassia and Bobby both helped me debug after this step! 
+Shoutout AGAIN to Bobby here! Coding is the area where I am the least confident but he answered every single tiny question that I had. And I had a LOT. After I downloaded the AccelStepper library, he helped me write some simple code to make the motor move, troubleshooted with me to figure out how many steps would take the breyer to the end of the press bed, and supported when I needed to duplicate certain sections to accommodate the second motor. Next, I played with that code to figure out the exact speed and distances that I needed. Then I wrote some code to test my limit switch and on button. Once I knew the buttons were wired correctly, I added a few lines to my main code to have them control the motor. Kassia and Bobby both helped me debug after this step! 
 
 Here’s the button test code:
 <pre><code class="language-arduino">
@@ -167,9 +173,10 @@ void loop()
 ![pov](./pov.jpeg)
 ![pov2](./pov2.jpeg)
 ![luvu](./luvu.jpeg)
+![a](./above.jpeg)
 ![me](./me.jpeg)
 
-That’s it! The demo went really well at the fair—everyone seemed to enjoy making prints and really loved how user-friendly the magnetic feature was. I had a bit of trouble figuring out the right tension for the pressbed as well as the amount of ink needed, so many prints did not come out as clearly as I hoped. However I think this can be remedied by adding more support to the press bed and clearing the typeface between each use. I’ll keep experimenting to make it better next semester. 
+That’s it! The demo went really well at the fair—everyone seemed to enjoy making prints and really loved how user-friendly the magnetic feature was. I had a bit of trouble figuring out the right tension for the press bed as well as the amount of ink needed, so many prints did not come out as clearly as I hoped. However I think this can be remedied by adding more support to the press bed and cleaning the typeface between each use. I’ll keep experimenting to make it better next semester. 
 
 Thanks to the whole teaching staff for a great semester! I learned so much and never would have guessed on day 1 that I would build a machine like this! 
 
