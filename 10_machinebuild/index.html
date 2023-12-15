@@ -44,7 +44,57 @@ As for the end effector, Fabian had the brilliant idea to use a solenoid and pot
 ![full2](./full2.jpg)
 
 <span>Electrical</span>
-Please see our code below! :) Special shoutout to Alan & Fatema for staying late and coming back for extra sessions to get the issues worked out! 
+In terms of coding, the program works by using AccelStepper to control our three stepper motors dynamically such that we can indicate the step size per motor for each command statement. Max acceleration and max speed were experimentally selected to achieve a relatively good movement. 
+
+In the first passthrough, we reset our motors such that we always try to start at the middle of our plotter. Then use an algorithm (colored red) that calculates [x, y] positions of a circle for a given radius dimension. At the top of the program, we indicate how many points we wish to have of our circle. Then in our loop, we have a function that loops through all the points and goes to them one by one to outline a circle. If we had more points, the more circular the circle looks like.
+
+At the end, we tell the program to go back to the center. We have seperate code for the pointillistic marker! 
+
+Code for the pointillistic marker:
+
+<pre><code class="language-arduino">
+int solenoidPin = 9;
+int buttonPin = 2;
+int potPin = A0;
+
+bool solenoidState = false; // Tracks the state of the solenoid
+bool buttonStatePrev = false; // Tracks the previous state of the button
+
+void setup() {
+  pinMode(solenoidPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP); // Using internal pull-up resistor for the button
+}
+
+void loop() {
+  // Read the button state
+  bool buttonState = digitalRead(buttonPin);
+
+  // Toggle solenoid state only if the button state has changed (edge detection)
+  if (buttonState != buttonStatePrev) {
+    buttonStatePrev = buttonState;
+
+    if (buttonState == LOW) {
+      solenoidState = !solenoidState; // Toggle solenoid state
+      delay(200); // Debounce delay
+    }
+  }
+
+  if (solenoidState) {
+    // State 2: Solenoid moves up and down at a rate controlled by the potentiometer
+    int potValue = analogRead(potPin);
+    int delayTime = map(potValue, 0, 1023, 1000, 50); // Map potentiometer range to delay time
+    digitalWrite(solenoidPin, HIGH);
+    delay(delayTime);
+    digitalWrite(solenoidPin, LOW);
+    delay(delayTime);
+  } else {
+    // State 1: Solenoid stays in a fixed down position
+    digitalWrite(solenoidPin, HIGH);
+  }
+}
+</code></pre>
+
+Code for the main machine:
 
 <pre><code class="language-arduino">
 #include <AccelStepper.h>
@@ -69,106 +119,86 @@ MultiStepper wheels;
 int global_x = 0;
 int global_y = 0;
 
-void setup() {
-  Serial.begin(9600);
-  stepper1.setMaxSpeed(3000);
-  stepper1.setAcceleration(000);
-  stepper2.setMaxSpeed(3000);
-  stepper2.setAcceleration(5000);
-  stepper3.setMaxSpeed(3000);
-  stepper3.setAcceleration(5000);
-
-  wheels.addStepper(stepper1);
-  wheels.addStepper(stepper2);
-  wheels.addStepper(stepper3);
+void setup() {   
+  Serial.begin(9600);
+  stepper1.setMaxSpeed(3000);
+  stepper1.setAcceleration(4000);
+  stepper2.setMaxSpeed(3000);
+  stepper2.setAcceleration(4000);
+  stepper3.setMaxSpeed(3000);
+  stepper3.setAcceleration(4000);
+  
+  wheels.addStepper(stepper1);
+  wheels.addStepper(stepper2);
+  wheels.addStepper(stepper3);
 
 }
 
 void loop()
 {
-  long positions[2];
-  generateCircle();
+  long positions[2];
+  generateCircle();
+  
+  printf("Going to 0:\n");
+  global_x = map(0, -9, 9, -15000, 15000);
+  global_y = map(0, -9, 9, -12500/2, 12500/2);
+  positions[0] = global_y;
+  positions[1] = -global_y;
+  positions[2] = global_x;
+  wheels.moveTo(positions);
+  wheels.runSpeedToPosition(); // Blocks until all are in position
+  delay(100);
+  
+  printf("Coordinates of the circle:\n");
+  for (int i = 0; i < NUM_POINTS + 1; i++) {
+      if (i == NUM_POINTS) {
+        printf("(%lf, %lf)\n", coordinates[i][0], coordinates[i][1]);
+        global_x = map(coordinates[0][0], -9, 9, -15000, 15000);
+        global_y = map(coordinates[0][1], -9, 9, -12500/2, 12500/2);
+        positions[0] = global_y;
+        positions[1] = -global_y;
+        positions[2] = global_x;
+        wheels.moveTo(positions);
+        wheels.runSpeedToPosition(); // Blocks until all are in position
+        delay(100);
+        break;
+      }
+      printf("(%lf, %lf)\n", coordinates[i][0], coordinates[i][1]);
+      global_x = map(coordinates[i][0], -9, 9, -15000, 15000);
+      global_y = map(coordinates[i][1], -9, 9, -12500/2, 12500/2);
+      positions[0] = global_y;
+      positions[1] = -global_y;
+      positions[2] = global_x;
+      wheels.moveTo(positions);
+      wheels.runSpeedToPosition(); // Blocks until all are in position
+      delay(100);
+  }
+  
+  printf("Going to 0:\n");
+  global_x = map(0, -9, 9, -15000, 15000);
+  global_y = map(0, -9, 9, -12500/2, 12500/2);
+  positions[0] = global_y;
+  positions[1] = -global_y;
+  positions[2] = global_x;
+  wheels.moveTo(positions);
+  wheels.runSpeedToPosition(); // Blxxocks until all are in position
+  delay(100);
 
-  printf("Going to 0:\n");
-  global_x = map(0, -9, 9, -12500, 12500);
-  global_y = map(0, -9, 9, -12500, 12500);
-  positions[0] = global_y;
-  positions[1] = -global_y;
-  positions[2] = global_x;
-  wheels.moveTo(positions);
-  wheels.runSpeedToPosition(); // Blocks until all are in position
-  delay(100);
-
-  printf("Coordinates of the circle:\n");
-  for (int i = 0; i < NUM_POINTS; i++) {
-      printf("(%lf, %lf)\n", coordinates[i][0], coordinates[i][1]);
-      global_x = map(coordinates[i][0], -9, 9, -12500, 12500);
-      global_y = map(coordinates[i][1], -9, 9, -12500, 12500);
-      positions[0] = global_y;
-      positions[1] = -global_y;
-      positions[2] = global_x;
-      wheels.moveTo(positions);
-      wheels.runSpeedToPosition(); // Blocks until all are in position
-      delay(100);
-  }
-
-  printf("Going to 0:\n");
-  global_x = map(0, -9, 9, -12500, 12500);
-  global_y = map(0, -9, 9, -12500, 12500);
-  positions[0] = global_y;
-  positions[1] = -global_y;
-  positions[2] = global_x;
-  wheels.moveTo(positions);
-  wheels.runSpeedToPosition(); // Blocks until all are in position
-  delay(100);
-
-//  long positions[2];
-//
-//  positions[0] = 0;
-//  positions[1] = 0;
-//  positions[2] = 1000;
-//  wheels.moveTo(positions);
-//  wheels.runSpeedToPosition(); // Blocks until all are in position
-//  delay(1000);
-//
-////   Move to a different coordinate
-//  positions[0] = 0;
-//  positions[1] = 0;
-//  positions[2] = -1000;
-//  wheels.moveTo(positions);
-//  wheels.runSpeedToPosition(); // Blocks until all are in position
-//  delay(1000);
-//
-////
-//  if (stepper1.distanceToGo() == 0) {
-//    Serial.println("Moving Stepper 1 in 1 second");
-//    stepper1.moveTo(rand() % 10000);
-//  }
-//  stepper1.run();
-//  if (stepper2.distanceToGo() == 0) {
-//    Serial.println("Moving Stepper 2 in 1 second");
-//    stepper2.moveTo(rand() % 10000);
-//  }
-//  stepper2.run();
-//  if (stepper3.distanceToGo() == 0) {
-//    Serial.println("Moving Stepper 3 in 1 second");
-//    stepper3.moveTo(rand() % 10000);
-//  }
-//  stepper3.run();
 }
 
 void generateCircle() {
-    int radius = 9;
-    double angle = 0;
-    double angleIncrement = 2 * M_PI / NUM_POINTS; // Angle increment for each point
-    int i;
+    int radius = 9;
+    double angle = 0;
+    double angleIncrement = 2 * M_PI / NUM_POINTS; // Angle increment for each point
+    int i;
 
-    for (i = 0; i < NUM_POINTS; i++) {
-        coordinates[i][0] = radius * cos(angle); // x = r * cos(theta)
-        coordinates[i][1] = radius * sin(angle); // y = r * sin(theta)
-        angle -= angleIncrement; // Decreasing angle to move clockwise
-    }
+    for (i = 0; i < NUM_POINTS; i++) {
+        coordinates[i][0] = radius * cos(angle); // x = r * cos(theta)
+        coordinates[i][1] = radius * sin(angle); // y = r * sin(theta)
+        angle -= angleIncrement; // Decreasing angle to move clockwise
+    }
 }
+
 </code></pre>
 
 </xmp>
